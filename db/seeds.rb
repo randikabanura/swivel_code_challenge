@@ -17,7 +17,6 @@ if Category.count.zero?
     Category.create(
       id: category['Id'],
       name: category['Name'],
-      author: category['Author'],
       state: category['State'] == 'active' ? 1 : 0,
       vertical: Vertical.find(category['Verticals'])
     )
@@ -30,6 +29,7 @@ if Course.count.zero?
     Course.create(
       id: course['Id'],
       name: course['Name'],
+      author: course['Author'],
       state: course['State'] == 'active' ? 1 : 0,
       category: Category.find(course['Categories'])
     )
