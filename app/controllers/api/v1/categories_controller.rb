@@ -1,9 +1,10 @@
 class Api::V1::CategoriesController < ApplicationController
+  before_action :set_category_service
   before_action :set_category, only: %i[ show update destroy ]
 
   # GET /api/v1/categories
   def index
-    @categories = Category.all
+    @categories = @category_service.get_categories
 
     render json: @categories
   end
@@ -39,13 +40,19 @@ class Api::V1::CategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_category
-      @category = Category.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def category_params
-      params.fetch(:category, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_category
+    @category = @category_service.get_category_by_id(params[:id])
+  end
+
+  def set_category_service
+    @category_service = ::V1::CategoryService.new
+  end
+
+  # Only allow a list of trusted parameters through.
+  def category_params
+    params.require(:category).permit(:id, :name, :state, :_destroy,
+                                     courses_attributes: %i[id name author state _destroy])
+  end
 end

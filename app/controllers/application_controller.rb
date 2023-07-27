@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
 
-  def hello
+  def hello_world
     render json: { status: 1, message: 'Let\'s go. We are alive' }, status: :ok
   end
 

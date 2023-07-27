@@ -1,9 +1,10 @@
 class Api::V1::CoursesController < ApplicationController
+  before_action :set_course_service
   before_action :set_course, only: %i[ show update destroy ]
 
   # GET /api/v1/courses
   def index
-    @courses = Course.all
+    @courses = @course_service.get_courses
 
     render json: @courses
   end
@@ -39,13 +40,18 @@ class Api::V1::CoursesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_course
-      @course = Course.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def course_params
-      params.fetch(:course, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_course
+    @course = @course_service.get_course_by_id(params[:id])
+  end
+
+  def set_course_service
+    @course_service = ::V1::CourseService.new
+  end
+
+  # Only allow a list of trusted parameters through.
+  def course_params
+    params.require(:course).permit(%i[id name author state _destroy])
+  end
 end

@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-  validates :name, presence: true, uniqueness: { case_sensitive: true }
+  include ValidationConcern
 
   belongs_to :vertical
   has_many :courses, dependent: :destroy

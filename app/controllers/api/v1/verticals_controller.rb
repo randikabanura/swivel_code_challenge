@@ -1,9 +1,10 @@
 class Api::V1::VerticalsController < ApplicationController
+  before_action :set_vertical_service
   before_action :set_vertical, only: %i[ show update destroy ]
 
   # GET /api/v1/verticals
   def index
-    @verticals = Vertical.all
+    @verticals = @vertical_service.get_verticals
 
     render json: @verticals
   end
@@ -39,13 +40,22 @@ class Api::V1::VerticalsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_vertical
-      @vertical = Vertical.find(params[:id])
-    end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_vertical
+    @vertical = @vertical_service.get_vertical_by_id(params[:id])
+  end
+
+  def set_vertical_service
+    @vertical_service = ::V1::VerticalService.new
+  end
 
     # Only allow a list of trusted parameters through.
     def vertical_params
-      params.fetch(:vertical, {})
+      params.require(:vertical).permit(
+        :name,
+        categories_attributes: [ :id, :name, :state, :_destroy,
+                                 courses_attributes: %i[id name author state _destroy]]
+      )
     end
-end
+  end
