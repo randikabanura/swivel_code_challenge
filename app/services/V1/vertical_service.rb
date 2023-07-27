@@ -16,7 +16,10 @@ module V1
     end
 
     def get_verticals(**args)
-      Vertical.all
+      query = args[:query] || '*'
+      Vertical.search(query).results
+    rescue StandardError => e
+      []
     end
   end
 end

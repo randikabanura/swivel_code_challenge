@@ -16,7 +16,10 @@ module V1
     end
 
     def get_courses(**args)
-      Course.all
+      query = args[:query] || '*'
+      Course.search(query).results
+    rescue StandardError => e
+      []
     end
   end
 end

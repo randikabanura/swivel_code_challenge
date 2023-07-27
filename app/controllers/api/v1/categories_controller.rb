@@ -4,7 +4,7 @@ class Api::V1::CategoriesController < ApplicationController
 
   # GET /api/v1/categories
   def index
-    @categories = @category_service.get_categories
+    @categories = @category_service.get_categories(query: params[:query])
 
     render json: @categories
   end

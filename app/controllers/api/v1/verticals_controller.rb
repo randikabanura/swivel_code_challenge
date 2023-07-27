@@ -4,7 +4,7 @@ class Api::V1::VerticalsController < ApplicationController
 
   # GET /api/v1/verticals
   def index
-    @verticals = @vertical_service.get_verticals
+    @verticals = @vertical_service.get_verticals(query: params[:query])
 
     render json: @verticals
   end

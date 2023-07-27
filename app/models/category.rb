@@ -1,4 +1,5 @@
 class Category < ApplicationRecord
+  include IndexConcern
   include ValidationConcern
 
   belongs_to :vertical

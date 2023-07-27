@@ -16,7 +16,10 @@ module V1
     end
 
     def get_categories(**args)
-      Category.all
+      query = args[:query] || '*'
+      Category.search(query).results
+    rescue StandardError => e
+      []
     end
   end
 end

@@ -9,6 +9,7 @@ if Vertical.count.zero?
       name: vertical['Name']
     )
   end
+  puts "Default verticals created: verticals count: #{Vertical.count}"
 end
 
 if Category.count.zero?
@@ -21,6 +22,7 @@ if Category.count.zero?
       vertical: Vertical.find(category['Verticals'])
     )
   end
+  puts "Default categories created: categories count: #{Category.count}"
 end
 
 if Course.count.zero?
@@ -34,5 +36,9 @@ if Course.count.zero?
       category: Category.find(course['Categories'])
     )
   end
+  puts "Default courses created: courses count: #{Course.count}"
 end
+
+# Rake tasks needed to setup the default data
+Rake::Task['searchkick:reindex:all'].invoke
 

@@ -4,7 +4,7 @@ class Api::V1::CoursesController < ApplicationController
 
   # GET /api/v1/courses
   def index
-    @courses = @course_service.get_courses
+    @courses = @course_service.get_courses(query: params[:query])
 
     render json: @courses
   end
