@@ -8,7 +8,7 @@ module Api
           status: 0,
           message: error_message
         }
-        response.merge({ errors: errors }) if errors.present?
+        response.merge!({ errors: errors }) if errors.present?
         response
       end
 
