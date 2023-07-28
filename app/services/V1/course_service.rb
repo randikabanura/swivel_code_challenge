@@ -19,15 +19,15 @@ module V1
       query = args[:query] || '*'
       Course.search(query).results
     rescue StandardError => e
-      []
+      nil
     end
 
     def create_course(course_params)
       @course = Course.new(course_params)
-      if @course.save!
+      if @course.save
         [true, @course]
       else
-        [false, nil]
+        [false, nil,  @course.errors.full_messages]
       end
     end
 
@@ -35,7 +35,7 @@ module V1
       if @course.update(course_params)
         [true, @course]
       else
-        [false, nil]
+        [false, nil,  @course.errors.full_messages]
       end
     end
 

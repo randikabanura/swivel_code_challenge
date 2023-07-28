@@ -6,11 +6,12 @@ class Api::V1::CoursesController < Api::V1::BaseController
   def index
     @courses = @course_service.get_courses(query: params[:query])
 
-    if @courses.present?
-      render json: success_response(@courses)
-    else
+    if @courses.nil?
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
-    end  end
+    else
+      render json: success_response(@courses)
+    end
+  end
 
   # GET /api/v1/courses/1
   def show
@@ -23,23 +24,23 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   # POST /api/v1/courses
   def create
-    status, @course = @course_service.create_course(course_create_params)
+    status, @course, errors = @course_service.create_course(course_create_params)
 
     if status
       render json: success_response(@course), status: :created
     else
-      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/courses/1
   def update
-    status, @course = @course_service.update_course(course_update_params)
+    status, @course, errors = @course_service.update_course(course_update_params)
 
     if status
       render json: success_response(@course)
     else
-      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
   end
 
@@ -67,10 +68,10 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   # Only allow a list of trusted parameters through.
   def course_create_params
-    params.require(:course).permit(%i[name author state])
+    params.require(:course).permit(%i[name author state category_id])
   end
 
   def course_update_params
-    params.require(:course).permit(%i[id name author state])
+    params.require(:course).permit(%i[id name author state category_id])
   end
 end

@@ -19,15 +19,15 @@ module V1
       query = args[:query] || '*'
       Category.search(query).results
     rescue StandardError => e
-      []
+      nil
     end
 
     def create_category(category_params)
       @category = Category.new(category_params)
-      if @category.save!
+      if @category.save
         [true, @category]
       else
-        [false, nil]
+        [false, nil, @category.errors.full_messages]
       end
     end
 
@@ -35,7 +35,7 @@ module V1
       if @category.update(category_params)
         [true, @category]
       else
-        [false, nil]
+        [false, nil, @category.errors.full_messages]
       end
     end
 

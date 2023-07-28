@@ -6,10 +6,10 @@ class Api::V1::VerticalsController < Api::V1::BaseController
   def index
     @verticals = @vertical_service.get_verticals(query: params[:query])
 
-    if @verticals.present?
-      render json: success_response(@verticals)
-    else
+    if @verticals.nil?
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    else
+      render json: success_response(@verticals)
     end
   end
 
@@ -24,23 +24,23 @@ class Api::V1::VerticalsController < Api::V1::BaseController
 
   # POST /api/v1/verticals
   def create
-    status, @vertical = @vertical_service.create_vertical(vertical_create_params)
+    status, @vertical, errors = @vertical_service.create_vertical(vertical_create_params)
 
     if status
       render json: success_response(@vertical), status: :created
     else
-      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/verticals/1
   def update
-    status, @vertical = @vertical_service.update_vertical(vertical_update_params)
+    status, @vertical, errors = @vertical_service.update_vertical(vertical_update_params)
 
     if status
       render json: success_response(@vertical)
     else
-      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
   end
 

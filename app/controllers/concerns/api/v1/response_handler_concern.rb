@@ -3,11 +3,12 @@ module Api
     module ResponseHandlerConcern
       extend ActiveSupport::Concern
 
-      def error_response(error_message)
-        {
+      def error_response(error_message, errors = [])
+        response = {
           status: 0,
-          error: error_message
+          message: error_message
         }
+        response.merge({ errors: errors }) if errors.present?
       end
 
       def success_response(success_message)

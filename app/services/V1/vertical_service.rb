@@ -19,15 +19,15 @@ module V1
       query = args[:query] || '*'
       Vertical.search(query).results
     rescue StandardError => e
-      []
+      nil
     end
 
     def create_vertical(vertical_params)
       @vertical = Vertical.new(vertical_params)
-      if @vertical.save!
+      if @vertical.save
         [true, @vertical]
       else
-        [false, nil]
+        [false, nil, @vertical.errors.full_messages]
       end
     end
 
@@ -35,7 +35,7 @@ module V1
       if @vertical.update(vertical_params)
         [true, @vertical]
       else
-        [false, nil]
+        [false, nil, @vertical.errors.full_messages]
       end
     end
 

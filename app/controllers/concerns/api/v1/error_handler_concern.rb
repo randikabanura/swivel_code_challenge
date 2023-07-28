@@ -1,6 +1,7 @@
 module Api
   module V1
     module ErrorHandlerConcern
+      extend ActiveSupport::Concern
       include Api::V1::ResponseHandlerConcern
 
       def self.included(base)
