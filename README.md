@@ -9,9 +9,10 @@ Models are named Vertical, Category and Course. Category have a parent called Ve
 * Validate uniqueness of Name of category and vertical across both models (if there is a category with name "TEST" then a vertical with name "TEST" can't be valid)
 * OAuth provider to protect the API using doorkeeper
 
-### Data to render
+### API Documentation
 
 APIs for CRUD functionalities for each models.
+You can find the API documentation from [here](https://documenter.getpostman.com/view/7109068/2s9XxsWGVw#a69ce980-971e-4776-a198-05a3938851b2).
 
 ## Development Environment Setup
 
