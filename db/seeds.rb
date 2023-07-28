@@ -32,6 +32,8 @@ if Vertical.count.zero? && Category.count.zero? && Course.count.zero?
   puts "Default courses created: courses count: #{Course.count}"
 end
 
-# Rake tasks needed to setup the default data
-Rake::Task['searchkick:reindex:all'].invoke
+unless ENV['OPEN_SEARCH'].present?
+  # Rake tasks needed to setup the default data
+  Rake::Task['searchkick:reindex:all'].invoke
+end
 
