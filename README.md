@@ -19,6 +19,8 @@ APIs for CRUD functionalities for each models.
 
 * Ruby 3.1.3
 * Rails 7.0.4
+* Opensearch 2.4.1
+* Redis 7.0.4
 
 ### Database
 

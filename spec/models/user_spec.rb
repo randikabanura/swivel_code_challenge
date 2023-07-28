@@ -1,6 +1,6 @@
 require "test_helper"
 
-class VerticalTest < ActiveSupport::TestCase
+class UserSpec < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
