@@ -9,6 +9,10 @@ Course.destroy_all
 
 
 if Vertical.count.zero? && Category.count.zero? && Course.count.zero?
+  ActiveRecord::Base.connection.reset_pk_sequence!('verticals')
+  ActiveRecord::Base.connection.reset_pk_sequence!('categories')
+  ActiveRecord::Base.connection.reset_pk_sequence!('courses')
+
   verticals = JSON.parse(File.read(Rails.root.join('db/data/json/verticals.json')))
   verticals.each do |vertical|
     Vertical.create(
