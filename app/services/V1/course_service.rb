@@ -21,6 +21,23 @@ module V1
     rescue StandardError => e
       []
     end
+
+    def create_course(course_params)
+      @course = Course.new(course_params)
+      if @course.save!
+        [true, @course]
+      else
+        [false, nil]
+      end
+    end
+
+    def update_course(course_params)
+      if @course.update(course_params)
+        [true, @course]
+      else
+        [false, nil]
+      end
+    end
   end
 end
 

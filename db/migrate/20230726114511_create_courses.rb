@@ -3,7 +3,7 @@ class CreateCourses < ActiveRecord::Migration[7.0]
     create_table :courses do |t|
       t.string :name
       t.string :author
-      t.boolean :state, default: true
+      t.integer :state, default: 0, null: false
       t.belongs_to :category, null: false, foreign_key: true
 
       t.timestamps

@@ -21,6 +21,23 @@ module V1
     rescue StandardError => e
       []
     end
+
+    def create_vertical(vertical_params)
+      @vertical = Vertical.new(vertical_params)
+      if @vertical.save!
+        [true, @vertical]
+      else
+        [false, nil]
+      end
+    end
+
+    def update_vertical(vertical_params)
+      if @vertical.update(vertical_params)
+        [true, @vertical]
+      else
+        [false, nil]
+      end
+    end
   end
 end
 

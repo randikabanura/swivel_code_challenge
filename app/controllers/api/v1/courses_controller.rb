@@ -1,4 +1,6 @@
 class Api::V1::CoursesController < ApplicationController
+  include Api::V1::ResponseConcern
+
   before_action :set_course_service
   before_action :set_course, only: %i[ show update destroy ]
 
@@ -6,31 +8,40 @@ class Api::V1::CoursesController < ApplicationController
   def index
     @courses = @course_service.get_courses(query: params[:query])
 
-    render json: @courses
-  end
+    if @courses.present?
+      render json: success_response(@courses)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end  end
 
   # GET /api/v1/courses/1
   def show
-    render json: @course
+    if @course.present?
+      render json: success_response(@course)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   # POST /api/v1/courses
   def create
-    @course = Course.new(course_params)
+    status, @course = @course_service.create_course(course_params)
 
-    if @course.save
-      render json: @course, status: :created, location: @course
+    if status
+      render json: success_response(@course), status: :created
     else
-      render json: @course.errors, status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/courses/1
   def update
-    if @course.update(course_params)
-      render json: @course
+    status, @course = @course_service.update_course(course_params)
+
+    if status
+      render json: success_response(@course)
     else
-      render json: @course.errors, status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
   end
 

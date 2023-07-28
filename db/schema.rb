@@ -16,7 +16,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_114511) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.boolean "state", default: true
+    t.integer "state", default: 0, null: false
     t.bigint "vertical_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_114511) do
   create_table "courses", force: :cascade do |t|
     t.string "name"
     t.string "author"
-    t.boolean "state", default: true
+    t.integer "state", default: 0, null: false
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

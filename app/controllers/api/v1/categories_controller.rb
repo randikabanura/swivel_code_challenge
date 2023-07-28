@@ -1,4 +1,6 @@
 class Api::V1::CategoriesController < ApplicationController
+  include Api::V1::ResponseConcern
+
   before_action :set_category_service
   before_action :set_category, only: %i[ show update destroy ]
 
@@ -6,31 +8,41 @@ class Api::V1::CategoriesController < ApplicationController
   def index
     @categories = @category_service.get_categories(query: params[:query])
 
-    render json: @categories
+    if @categories.present?
+      render json: success_response(@categories)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   # GET /api/v1/categories/1
   def show
-    render json: @category
+    if @category.present?
+      render json: success_response(@category)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   # POST /api/v1/categories
   def create
-    @category = Category.new(category_params)
+    status, @category = @category_service.create_category(category_params)
 
-    if @category.save
-      render json: @category, status: :created, location: @category
+    if status
+      render json: success_response(@category), status: :created
     else
-      render json: @category.errors, status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/categories/1
   def update
-    if @category.update(category_params)
+    status, @category = @category_service.update_category(category_params)
+
+    if status
       render json: @category
     else
-      render json: @category.errors, status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
   end
 

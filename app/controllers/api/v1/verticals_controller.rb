@@ -1,4 +1,6 @@
 class Api::V1::VerticalsController < ApplicationController
+  include Api::V1::ResponseConcern
+
   before_action :set_vertical_service
   before_action :set_vertical, only: %i[ show update destroy ]
 
@@ -6,31 +8,41 @@ class Api::V1::VerticalsController < ApplicationController
   def index
     @verticals = @vertical_service.get_verticals(query: params[:query])
 
-    render json: @verticals
+    if @verticals.present?
+      render json: success_response(@verticals)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   # GET /api/v1/verticals/1
   def show
-    render json: @vertical
+    if @vertical.present?
+      render json: success_response(@vertical)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   # POST /api/v1/verticals
   def create
-    @vertical = Vertical.new(vertical_params)
+    status, @vertical = @vertical_service.create_vertical(vertical_params)
 
-    if @vertical.save
-      render json: @vertical, status: :created, location: @vertical
+    if status
+      render json: success_response(@vertical), status: :created
     else
-      render json: @vertical.errors, status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /api/v1/verticals/1
   def update
-    if @vertical.update(vertical_params)
-      render json: @vertical
+    status, @vertical = @vertical_service.update_vertical(vertical_params)
+
+    if status
+      render json: success_response(@vertical)
     else
-      render json: @vertical.errors, status: :unprocessable_entity
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
   end
 
@@ -50,12 +62,12 @@ class Api::V1::VerticalsController < ApplicationController
     @vertical_service = ::V1::VerticalService.new
   end
 
-    # Only allow a list of trusted parameters through.
-    def vertical_params
-      params.require(:vertical).permit(
-        :name,
-        categories_attributes: [ :id, :name, :state, :_destroy,
-                                 courses_attributes: %i[id name author state _destroy]]
-      )
-    end
+  # Only allow a list of trusted parameters through.
+  def vertical_params
+    params.require(:vertical).permit(
+      :name,
+      categories_attributes: [:id, :name, :state, :_destroy,
+                              courses_attributes: %i[id name author state _destroy]]
+    )
   end
+end

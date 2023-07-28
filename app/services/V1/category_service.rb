@@ -21,6 +21,23 @@ module V1
     rescue StandardError => e
       []
     end
+
+    def create_category(category_params)
+      @category = Category.new(category_params)
+      if @category.save!
+        [true, @category]
+      else
+        [false, nil]
+      end
+    end
+
+    def update_category(category_params)
+      if @category.update(category_params)
+        [true, @category]
+      else
+        [false, nil]
+      end
+    end
   end
 end
 
