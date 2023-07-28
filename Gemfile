@@ -25,15 +25,15 @@ gem 'bootsnap', require: false
 gem 'rack-cors'
 
 # Search tools
-gem 'opensearch-ruby'
-gem 'searchkick'
+gem 'opensearch-ruby', '~> 2.1.0'
+gem 'searchkick', '~> 5.1.1'
 
 # API serialization
-gem 'jsonapi-serializer'
+gem 'jsonapi-serializer', '~> 2.2.0'
 
 # OAuth Provider
-gem 'devise'
-gem 'doorkeeper'
+gem 'devise', '~> 4.9.2'
+gem 'doorkeeper', '~> 5.6.6'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -41,10 +41,11 @@ group :development, :test do
 
   # Unit testing
   gem 'factory_bot_rails', '~> 6.2'
-  gem 'faker'
-  gem 'jsonapi-rspec'
+  gem 'faker', '~> 3.2.0'
+  gem 'jsonapi-rspec', '~> 0.0.11'
   gem 'rspec-rails', '~> 6.0', '>= 6.0.1'
-  gem 'rubocop-rspec'
+  gem 'rubocop-rspec', '~> 2.16.0'
+  gem 'shoulda-matchers', '~> 5.3', require: false
 end
 
 group :development do
