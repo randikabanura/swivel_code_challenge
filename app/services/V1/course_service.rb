@@ -12,7 +12,7 @@ module V1
     end
 
     def get_course_by_id(id)
-      @course ||= course.find(id)
+      @course ||= Course.find(id)
     end
 
     def get_courses(**args)
