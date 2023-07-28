@@ -7,7 +7,7 @@ module Api
       def self.included(base)
         base.class_eval do
           rescue_from StandardError do |e|
-            puts e.exception.backtrace
+            Rails.logger.debug(e.exception.backtrace)
             respond(500, e.to_s)
           end
         end
