@@ -25,7 +25,7 @@ class Api::V1::CoursesController < ApplicationController
 
   # POST /api/v1/courses
   def create
-    status, @course = @course_service.create_course(course_params)
+    status, @course = @course_service.create_course(course_create_params)
 
     if status
       render json: success_response(@course), status: :created
@@ -36,7 +36,7 @@ class Api::V1::CoursesController < ApplicationController
 
   # PATCH/PUT /api/v1/courses/1
   def update
-    status, @course = @course_service.update_course(course_params)
+    status, @course = @course_service.update_course(course_update_params)
 
     if status
       render json: success_response(@course)
@@ -47,7 +47,13 @@ class Api::V1::CoursesController < ApplicationController
 
   # DELETE /api/v1/courses/1
   def destroy
-    @course.destroy
+    status = @course_service.destroy_course
+
+    if status
+      render json: success_response(@course)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   private
@@ -62,7 +68,11 @@ class Api::V1::CoursesController < ApplicationController
   end
 
   # Only allow a list of trusted parameters through.
-  def course_params
-    params.require(:course).permit(%i[id name author state _destroy])
+  def course_create_params
+    params.require(:course).permit(%i[name author state])
+  end
+
+  def course_update_params
+    params.require(:course).permit(%i[id name author state])
   end
 end

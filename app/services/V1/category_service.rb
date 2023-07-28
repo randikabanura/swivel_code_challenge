@@ -38,6 +38,10 @@ module V1
         [false, nil]
       end
     end
+
+    def destroy_category
+      @category.destroy
+    end
   end
 end
 

@@ -26,7 +26,7 @@ class Api::V1::CategoriesController < ApplicationController
 
   # POST /api/v1/categories
   def create
-    status, @category = @category_service.create_category(category_params)
+    status, @category = @category_service.create_category(category_create_params)
 
     if status
       render json: success_response(@category), status: :created
@@ -37,7 +37,7 @@ class Api::V1::CategoriesController < ApplicationController
 
   # PATCH/PUT /api/v1/categories/1
   def update
-    status, @category = @category_service.update_category(category_params)
+    status, @category = @category_service.update_category(category_update_params)
 
     if status
       render json: @category
@@ -48,7 +48,13 @@ class Api::V1::CategoriesController < ApplicationController
 
   # DELETE /api/v1/categories/1
   def destroy
-    @category.destroy
+    status = @category_service.destroy_category
+
+    if status
+      render json: success_response(@category)
+    else
+      render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
+    end
   end
 
   private
@@ -63,8 +69,11 @@ class Api::V1::CategoriesController < ApplicationController
   end
 
   # Only allow a list of trusted parameters through.
-  def category_params
-    params.require(:category).permit(:id, :name, :state, :_destroy,
-                                     courses_attributes: %i[id name author state _destroy])
+  def category_create_params
+    params.require(:category).permit(:name, :state)
+  end
+
+  def category_update_params
+    params.require(:category).permit(:id, :name, :state, courses_attributes: %i[id name author state _destroy])
   end
 end
