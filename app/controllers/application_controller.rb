@@ -1,5 +1,4 @@
-class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
+class ApplicationController < ActionController::API
 
   def hello_world
     render json: { status: 1, message: 'Let\'s go. We are alive' }, status: :ok
