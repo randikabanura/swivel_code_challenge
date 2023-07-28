@@ -9,6 +9,7 @@ module Api
           message: error_message
         }
         response.merge({ errors: errors }) if errors.present?
+        response
       end
 
       def success_response(success_message)
