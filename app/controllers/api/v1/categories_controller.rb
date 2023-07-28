@@ -1,6 +1,4 @@
-class Api::V1::CategoriesController < ApplicationController
-  include Api::V1::ResponseConcern
-
+class Api::V1::CategoriesController < Api::V1::BaseController
   before_action :set_category_service
   before_action :set_category, only: %i[ show update destroy ]
 
@@ -70,10 +68,10 @@ class Api::V1::CategoriesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def category_create_params
-    params.require(:category).permit(:name, :state)
+    params.require(:category).permit(:name, :state, :vertical_id)
   end
 
   def category_update_params
-    params.require(:category).permit(:id, :name, :state, courses_attributes: %i[id name author state _destroy])
+    params.require(:category).permit(:id, :name, :state, :vertical_id, courses_attributes: %i[id name author state _destroy])
   end
 end

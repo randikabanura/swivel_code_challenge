@@ -1,6 +1,4 @@
-class Api::V1::VerticalsController < ApplicationController
-  include Api::V1::ResponseConcern
-
+class Api::V1::VerticalsController < Api::V1::BaseController
   before_action :set_vertical_service
   before_action :set_vertical, only: %i[ show update destroy ]
 

@@ -14,7 +14,7 @@ if Vertical.count.zero? && Category.count.zero? && Course.count.zero?
   categories.each do |category|
     Category.create(
       name: category['Name'],
-      state: category['State'] == 'active' ? 1 : 0,
+      state: category['State'] == 'active' ? 0 : 1,
       vertical: Vertical.find(category['Verticals'])
     )
   end
@@ -25,7 +25,7 @@ if Vertical.count.zero? && Category.count.zero? && Course.count.zero?
     Course.create(
       name: course['Name'],
       author: course['Author'],
-      state: course['State'] == 'active' ? 1 : 0,
+      state: course['State'] == 'active' ? 0 : 1,
       category: Category.find(course['Categories'])
     )
   end

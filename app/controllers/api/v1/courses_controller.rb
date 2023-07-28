@@ -1,6 +1,4 @@
-class Api::V1::CoursesController < ApplicationController
-  include Api::V1::ResponseConcern
-
+class Api::V1::CoursesController < Api::V1::BaseController
   before_action :set_course_service
   before_action :set_course, only: %i[ show update destroy ]
 
