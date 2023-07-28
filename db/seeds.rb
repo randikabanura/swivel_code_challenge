@@ -1,6 +1,13 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
+# If running seed file after the first default data creation please comment the following lines
+# where we remove any records on 'verticals', 'categories' and 'courses' tables.
+Vertical.destroy_all
+Category.destroy_all
+Course.destroy_all
+
+
 if Vertical.count.zero? && Category.count.zero? && Course.count.zero?
   verticals = JSON.parse(File.read(Rails.root.join('db/data/json/verticals.json')))
   verticals.each do |vertical|
