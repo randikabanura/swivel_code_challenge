@@ -9,14 +9,14 @@ class Api::V1::VerticalsController < Api::V1::BaseController
     if @verticals.nil?
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     else
-      render json: success_response(@verticals)
+      render_vertical_response(@verticals)
     end
   end
 
   # GET /api/v1/verticals/1
   def show
     if @vertical.present?
-      render json: success_response(@vertical)
+      render_vertical_response(@vertical)
     else
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Api::V1::VerticalsController < Api::V1::BaseController
     status, @vertical, errors = @vertical_service.create_vertical(vertical_create_params)
 
     if status
-      render json: success_response(@vertical), status: :created
+      render_vertical_response(@vertical)
     else
       render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class Api::V1::VerticalsController < Api::V1::BaseController
     status, @vertical, errors = @vertical_service.update_vertical(vertical_update_params)
 
     if status
-      render json: success_response(@vertical)
+      render_vertical_response(@vertical)
     else
       render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
@@ -49,7 +49,7 @@ class Api::V1::VerticalsController < Api::V1::BaseController
     status = @vertical_service.destroy_vertical
 
     if status
-      render json: success_response(@vertical)
+      render_vertical_response(@vertical)
     else
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
@@ -76,5 +76,10 @@ class Api::V1::VerticalsController < Api::V1::BaseController
       categories_attributes: [:id, :name, :state, :_destroy,
                               courses_attributes: %i[id name author state _destroy]]
     )
+  end
+
+  def render_vertical_response(vertical_data)
+    response_hash = Api::V1::VerticalSerializer.new(vertical_data).serializable_hash
+    render json: success_response(response_hash)
   end
 end

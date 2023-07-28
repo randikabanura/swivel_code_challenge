@@ -9,14 +9,14 @@ class Api::V1::CoursesController < Api::V1::BaseController
     if @courses.nil?
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     else
-      render json: success_response(@courses)
+      render_course_response(@courses)
     end
   end
 
   # GET /api/v1/courses/1
   def show
     if @course.present?
-      render json: success_response(@course)
+      render_course_response(@course)
     else
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
     status, @course, errors = @course_service.create_course(course_create_params)
 
     if status
-      render json: success_response(@course), status: :created
+      render_course_response(@course)
     else
       render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
     status, @course, errors = @course_service.update_course(course_update_params)
 
     if status
-      render json: success_response(@course)
+      render_course_response(@course)
     else
       render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
@@ -49,7 +49,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
     status = @course_service.destroy_course
 
     if status
-      render json: success_response(@course)
+      render_course_response(@course)
     else
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
@@ -73,5 +73,10 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def course_update_params
     params.require(:course).permit(%i[id name author state category_id])
+  end
+
+  def render_course_response(course_data)
+    response_hash = Api::V1::CourseSerializer.new(course_data).serializable_hash
+    render json: success_response(response_hash)
   end
 end

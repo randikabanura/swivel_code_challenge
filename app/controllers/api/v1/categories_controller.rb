@@ -9,14 +9,14 @@ class Api::V1::CategoriesController < Api::V1::BaseController
     if @categories.nil?
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     else
-      render json: success_response(@categories)
+      render_category_response(@categories)
     end
   end
 
   # GET /api/v1/categories/1
   def show
     if @category.present?
-      render json: success_response(@category)
+      render_category_response(@category)
     else
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Api::V1::CategoriesController < Api::V1::BaseController
     status, @category, errors = @category_service.create_category(category_create_params)
 
     if status
-      render json: success_response(@category), status: :created
+      render_category_response(@category)
     else
       render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class Api::V1::CategoriesController < Api::V1::BaseController
     status, @category, errors = @category_service.update_category(category_update_params)
 
     if status
-      render json: @category
+      render_category_response(@category)
     else
       render json: error_response(I18n.t('something_went_wrong'), errors), status: :unprocessable_entity
     end
@@ -49,7 +49,7 @@ class Api::V1::CategoriesController < Api::V1::BaseController
     status = @category_service.destroy_category
 
     if status
-      render json: success_response(@category)
+      render_category_response(@category)
     else
       render json: error_response(I18n.t('something_went_wrong')), status: :unprocessable_entity
     end
@@ -73,5 +73,10 @@ class Api::V1::CategoriesController < Api::V1::BaseController
 
   def category_update_params
     params.require(:category).permit(:id, :name, :state, :vertical_id, courses_attributes: %i[id name author state _destroy])
+  end
+
+  def render_category_response(category_data)
+    response_hash = Api::V1::CategorySerializer.new(category_data).serializable_hash
+    render json: success_response(response_hash)
   end
 end
