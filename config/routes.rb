@@ -10,6 +10,19 @@ Rails.application.routes.draw do
     end
   end
 
+  scope :api, format: :json do
+    scope :v1 do
+      devise_for :users, path_names: {
+        registration: 'signup'
+      }, controllers: {
+        registrations: 'api/v1/users/registrations'
+      }
+      use_doorkeeper do
+        skip_controllers :authorizations, :applications, :authorized_applications
+      end
+    end
+  end
+
   # When route is not found it will redirected to not_found_method action
   match '*unmatched', to: 'application#not_found_method', via: :all
 end
