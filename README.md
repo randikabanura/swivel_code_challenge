@@ -13,8 +13,6 @@ Models are named Vertical, Category and Course. Category have a parent called Ve
 
 APIs for CRUD functionalities for each models.
 
-## Previews
-
 ## Development Environment Setup
 
 * Ruby 3.1.3
@@ -22,15 +20,19 @@ APIs for CRUD functionalities for each models.
 * Opensearch 2.4.1
 * Redis 7.0.4
 
+### Clone Repository
+
+Go to the folder you want to clone the repository and run the following.
+
+```bash
+$ git clone https://gitfront.io/r/banura/DKywxWd6Eh6f/swivel-code-challenge.git
+```
+
 ### Database
 
 I have created the application with traditional PostgreSQL database. Please change the `config/database.yml`
 according to your local setup.
 
-### Caching
-
-By default, caching is only enabled in your production environment. You can play around with caching locally by running `rails dev:cache`,
-or by setting `config.action_controller.perform_caching` to `true` in `config/environments/development.rb`.
 
 ### Credentials
 
