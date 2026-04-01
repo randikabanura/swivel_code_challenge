@@ -14,10 +14,6 @@ Models are named Vertical, Category and Course. Category have a parent called Ve
 APIs for CRUD functionalities for each models.
 You can find the API documentation from [here](https://documenter.getpostman.com/view/7109068/2s9XxsWGVw#a69ce980-971e-4776-a198-05a3938851b2).
 
-### Deployed Application
-
-You can access deployed API from [here](https://swivel-code-challenge.onrender.com/).
-
 ## Development Environment Setup
 
 * Ruby 3.1.3
